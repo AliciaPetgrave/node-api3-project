@@ -1,8 +1,12 @@
 const express = require('express');
-
 const server = express();
 
+const userRouter = require('./users/userRouter')
+const postRouter = require('./posts/postRouter')
+
 server.use(logger)
+server.use('/api/posts', postRouter)
+server.use('/api/users', userRouter)
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
@@ -13,9 +17,8 @@ server.get('/', (req, res) => {
 function logger(req, res, next) {
   const method = req.method
   const endpoint = req.originalUrl
-  const time = new.Date().toISOString()
 
-  console.log(`${method} to ${endpoint} at ${time}`)
+  console.log(`[${new Date().toISOString()}] ${method} to ${endpoint}`)
   next()
 }
 
